@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>SCP-Home!!!</title>
+    </head>
+    <body>
+        <style>
+            img{  /*Imagem do local*/
+                width: 100%;
+                height: 100%;
+            }
+            body{
+                font-family: Arial, Helvetica, sans-serif;
+                background-color: black;
+                font-size: 200%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                color: white;
+            }
+             .Navbar{
+                position: relative;
+                top: 50px;
+             }
+            /* Links */
+            .Description{
+                transition: 400ms all;
+                position: absolute;
+                position: fixed;
+                top: 10px;
+                left: 10px;
+            }
+            .Description:hover{
+                transform: scale(1.2);
+            }
+        </style>
+        <div>
+            <div class="pagina"></div>
+        </div>
+        <div>
+            <nav class="Navbar">
+                <a href wm-link="safe.html" wm-destino=".pagina">Safe</a>
+                <a href wm-link="euclideo.html" wm-destino=".pagina">Euclideo</a>
+                <a href wm-link="keter.html" wm-destino=".pagina">Keter</a>
+                <a href wm-link="thaumiel.html" wm-destino=".pagina">Thaumiel</a>
+                <a href wm-link="inicio.html" wm-destino=".pagina">Voltando</a>
+            </nav>
+        </div>
+    <script>
+        function navegarViaAjax(url, seletor, push = true){
+            if(!url || !seletor) return
+                const elemento = document.querySelector(seletor)
+                fetch(url)
+                .then(resp => resp.text())
+                .then(html => {
+                    elemento.innerHTML = html
+                    if(push){
+                        history.push({ seletor}, "Página Ajax", url)
+                    }
+                })
+        }
+
+        document.querySelectorAll('[wm-link]').forEach(link =>{
+            const url = link.attributes['wm-link'].value
+            const seletorDestino = link.attributes['wm-destino'].value
+
+            link.onclick = e => {
+                e.preventDefault()
+                navegarViaAjax(url, seletorDestino)
+            }
+        })
+
+        window.onpopstate = e => {
+            if(e.state){
+                navegarViaAjax(window.location.href, e.state.seletor, false)
+            }
+        }
+    </script>
+    </body>
+</html>
